@@ -20,7 +20,7 @@ From a packaged extension:
 
 ```bash
 npx @vscode/vsce package
-code --install-extension dayseeker-theme-1.1.0.vsix
+code --install-extension dayseeker-theme-1.2.0.vsix
 ```
 
 Then choose **Dark Sun** in the Color Theme picker. There is no light variant. Neon glow stays off until you turn it on.
@@ -111,6 +111,24 @@ python3 scripts/check_theme.py
 ```
 
 GitHub Actions runs that script on push and pull request.
+
+## Agents window
+
+The Agents window has its own color tokens. Current VS Code registers them in `src/vs/workbench/common/agentsColors.ts`, re-exported from `src/vs/workbench/contrib/sessions/common/theme.ts` (the file moved out of `src/vs/sessions/common/theme.ts` on November 6, 2026). The phone-layout diff markers live next to those views in `mobileDiffColors.ts`. Every one of those tokens is set from the existing palette.
+
+The shell is the eclipse `#1E111B`. Card panels, the active session, and the docked details pane use the disk `#2E212B` or the same eclipse, with corona text `#FFEFF2` and violet borders `#462B5D`. The chat input uses the input well `#281B25`, the same text, the comment blue `#64A3CB` for placeholder text, and keyword magenta `#FF8CD1` when focused. Badges use that magenta with eclipse text. The new-session button is transparent over the shell, with a violet border and a violet hover `#3F2446`. The docked activity bar is transparent (`#1E111B00`) so the gradient stays visible behind it.
+
+The shell gradient tint is the flower-field magenta `#8A2672`. In a dark Agents window, VS Code paints a radial wash from the bottom-right corner: 13% tint at the corner, 10% and 7% as it fades, and the plain eclipse background by 60% of the ellipse. Panels stay opaque, so body text is not sitting on the wash.
+
+Needs-input markers, the welcome-page graphic, and the mobile added/modified/deleted markers reuse the amber `#FFB07F`, the green ring `#75C07F`, and the error red `#FF5452`. The same pairs are in `scripts/check_theme.py` and have to clear 4.5:1.
+
+The aquarium easter egg does not register theme colors. Its water, fish, and food stay as VS Code draws them. This theme does not set anything for it.
+
+`npx @vscode/vsce package` does not warn about these keys. VS Code's color-theme schema only lists colors the running editor has registered, and that schema disallows extra keys, so an older VS Code can underline a key in this file. The theme still loads. Unknown keys are skipped.
+
+![Approximate Agents window preview](images/preview-agents.png)
+
+That picture is an approximation of the shell gradient, panels, and chat input. It is not a screenshot of VS Code.
 
 ## What's covered
 
