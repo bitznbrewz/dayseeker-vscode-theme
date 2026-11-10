@@ -1,0 +1,12 @@
+.git/**
+.github/**
+.gitignore
+.vscode/**
+node_modules/**
+scripts/**
+sample.py
+sample.js
+**/*.vsix
+**/*.map
+**/.DS_Store
+package-lock.json
