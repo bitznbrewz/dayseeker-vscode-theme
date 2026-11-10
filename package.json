@@ -1,0 +1,52 @@
+{
+  "name": "dayseeker-theme",
+  "displayName": "Dark Sun",
+  "description": "Dark VS Code theme sampled from the Dayseeker covers Dark Sun and Creature in the Black Night. Purple and pink neon, a little red, and blue on near-black.",
+  "version": "1.0.0",
+  "publisher": "ayayron",
+  "author": "AyAyRon",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bitznbrewz/dayseeker-vscode-theme.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bitznbrewz/dayseeker-vscode-theme/issues"
+  },
+  "homepage": "https://github.com/bitznbrewz/dayseeker-vscode-theme#readme",
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#1E111B",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark",
+    "dayseeker",
+    "dark sun",
+    "color-theme"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "Dark Sun",
+        "uiTheme": "vs-dark",
+        "path": "./themes/dark-sun-color-theme.json"
+      }
+    ]
+  },
+  "scripts": {
+    "check": "python3 scripts/check_theme.py"
+  },
+  "configurationDefaults": {
+    "editor.semanticHighlighting.enabled": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active"
+  }
+}
