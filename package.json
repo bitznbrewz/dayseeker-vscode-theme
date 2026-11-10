@@ -2,7 +2,7 @@
   "name": "dayseeker-theme",
   "displayName": "Dark Sun",
   "description": "Dark VS Code theme sampled from the Dayseeker covers Dark Sun and Creature in the Black Night. Purple and pink neon, a little red, and blue on near-black.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "ayayron",
   "author": "AyAyRon",
   "license": "MIT",
@@ -22,6 +22,11 @@
   "engines": {
     "vscode": "^1.75.0"
   },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onCommand:darkSun.enableNeonGlow",
+    "onCommand:darkSun.disableNeonGlow"
+  ],
   "categories": [
     "Themes"
   ],
@@ -33,6 +38,18 @@
     "color-theme"
   ],
   "contributes": {
+    "commands": [
+      {
+        "command": "darkSun.enableNeonGlow",
+        "title": "Enable Neon Glow",
+        "category": "Dark Sun"
+      },
+      {
+        "command": "darkSun.disableNeonGlow",
+        "title": "Disable Neon Glow",
+        "category": "Dark Sun"
+      }
+    ],
     "themes": [
       {
         "label": "Dark Sun",

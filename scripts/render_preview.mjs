@@ -135,7 +135,7 @@ const css = `
   .status .warn { color: var(--amber); margin-left: 12px; }
 `;
 
-function page(filename, lang, code) {
+function page(filename, lang, code, glow) {
   const lineCount = code.split("\n").length;
   const height = 36 + 36 + lineCount * 21 + 24 + 78 + 28;
   const chip = (key, name) => {
@@ -149,11 +149,24 @@ function page(filename, lang, code) {
     .map((key) => chip(key, key.replace("ansiBright", "").toLowerCase()))
     .join("");
   const cssSized = css.replaceAll("HEIGHT_PX", String(height));
+  const glowCss = glow
+    ? `
+    body.glow .tab.on { box-shadow: inset 0 2px 0 ${c["editorBracketHighlight.foreground1"]}, 0 0 10px ${c["editorBracketHighlight.foreground1"]}66; }
+    .glow .shiki span[style*="color:${c["editorBracketHighlight.foreground1"]}"] {
+      text-shadow: 0 0 1px ${c["editorBracketHighlight.foreground1"]}, 0 0 6px ${c["editorBracketHighlight.foreground1"]}73;
+    }
+    .glow .shiki span[style*="color:#FF7B8E"] {
+      text-shadow: 0 0 1px #FF7B8E, 0 0 6px rgba(255, 123, 142, 0.4);
+    }
+    .glow .shiki .line { display: block; }
+    .glow .shiki .line:nth-child(17) { box-shadow: inset 0 0 18px rgba(255, 140, 209, 0.22); }
+  `
+    : "";
   return { height, html: `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><style>${cssSized}
+<html lang="en"><head><meta charset="utf-8"><style>${cssSized}${glowCss}
   .chip { display: inline-block; margin: 0 6px 4px 0; padding: 1px 6px; border: 1px solid; border-radius: 4px; }
   </style></head>
-<body><div class="window">
+<body class="${glow ? "glow" : ""}"><div class="window">
   <div class="title"><b class="dot"></b> Dark Sun <span>— ${filename}</span></div>
   <div class="body">
     <aside class="activity"><i class="on"></i><i></i><i></i><i></i></aside>
@@ -176,9 +189,14 @@ function page(filename, lang, code) {
 }
 
 mkdirSync(resolve(root, "images"), { recursive: true });
-const pythonPage = page("sample.py", "python", python);
-const javascriptPage = page("sample.js", "jsx", javascript);
-writeFileSync("/tmp/preview-python.html", pythonPage.html);
-writeFileSync("/tmp/preview-javascript.html", javascriptPage.html);
-writeFileSync("/tmp/preview-sizes.txt", `${pythonPage.height} ${javascriptPage.height}\n`);
-console.log("wrote html", pythonPage.height, javascriptPage.height);
+const pages = [
+  ["python", page("sample.py", "python", python, false)],
+  ["javascript", page("sample.js", "jsx", javascript, false)],
+  ["python-glow", page("sample.py", "python", python, true)],
+  ["javascript-glow", page("sample.js", "jsx", javascript, true)],
+];
+for (const [name, result] of pages) {
+  writeFileSync(`/tmp/preview-${name}.html`, result.html);
+  console.log(name, result.height);
+}
+writeFileSync("/tmp/preview-sizes.txt", pages.map(([name, result]) => `${name} ${result.height}`).join("\n") + "\n");
